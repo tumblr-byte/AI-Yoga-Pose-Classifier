@@ -20,14 +20,19 @@ CNN-based classification model trained on yoga pose datasets
 **Image/video source: Freepik**
 
 
-**creating_csv.py** -- This script extracts landmarks from yoga pose images (like Warrior2, Tree, Downward Dog) and saves them in a CSV file.The folder structure should be organized as follows:
-
-<pre> dataset/ ├── warrior2/ │ ├── image1.jpg │ ├── image2.jpg │ └── ... ├── tree/ │ ├── image1.jpg │ ├── image2.jpg │ └── ... ├── downward_dog/ │ ├── image1.jpg │ ├── image2.jpg │ └── ... └── ... </pre>
+**creating_csv.py** -- This script extracts landmarks from yoga pose images (like Warrior2, Tree, Downward Dog) and saves them in a CSV file.
 
 **In the csv:**
 33 pose keypoints detected by MediaPipe
+
+
 Each keypoint has 3 coordinates (x, y, z)
+
+
 Total features: 33 keypoints × 3 coordinates = 99 columns
+
+
+
 Plus filename and class_name = 101 total columns
 
 
