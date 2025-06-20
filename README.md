@@ -17,4 +17,4 @@ Works with images, videos, and real-time camera input
 
 CNN-based classification model trained on yoga pose datasets
 
-![Image](https://github.com/user-attachments/assets/cc5ab53f-a937-43bd-b970-f06340cba94e)
+**Image/video source: Freepik**
