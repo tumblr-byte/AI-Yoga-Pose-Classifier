@@ -1,6 +1,6 @@
 # AI-Yoga-Pose-Classifier
 
-![Image](https://github.com/user-attachments/assets/5d9ff9c7-3094-4c79-b361-48e470e03d92)
+![Image](https://github.com/user-attachments/assets/6e18bde4-383f-4831-a766-97e4c30963b6)
 
 Developed an intelligent yoga pose classification system that automatically detects and identifies specific yoga poses by name. The system uses MediaPipe to extract human body keypoints and then analyzes these pose landmarks to accurately classify different yoga asanas.
 
