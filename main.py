@@ -19,12 +19,15 @@ df = pd.read_csv("/content/pose_landmarks.csv")
 le = LabelEncoder()
 df['label'] = le.fit_transform(df['class_name'])
 
+
+
+
 # Split dataset with stratification for balanced splits
 train_df, valid_df = train_test_split(df, test_size=0.2, random_state=42, stratify=df['label'])
 
 class PoseLandmarkDataset(Dataset):
     def __init__(self, dataframe):
-        self.X = dataframe.iloc[:, 1:-2].values.astype('float32')  # exclude filename and class_name
+        self.X = dataframe.iloc[:, 1:-1].values.astype('float32')  # exclude filename and class_name
         self.y = dataframe['label'].values.astype('int64')         # encoded labels
 
     def __len__(self):
@@ -85,15 +88,19 @@ for epoch in range(epochs):
         correct += (preds == labels).sum().item()
         total += labels.size(0)
 
+
+
+
+
     avg_loss = running_loss / len(train_loader)
     train_acc = correct / total
     train_losses.append(avg_loss)
-    
+
     # Validation
     model.eval()
     val_correct = 0
     val_total = 0
-    
+
     with torch.no_grad():
         for inputs, labels in valid_loader:
             inputs, labels = inputs.to(device), labels.to(device)
@@ -101,10 +108,10 @@ for epoch in range(epochs):
             _, preds = torch.max(outputs, 1)
             val_correct += (preds == labels).sum().item()
             val_total += labels.size(0)
-    
+
     val_acc = val_correct / val_total
     val_accuracies.append(val_acc)
-    
+
     print(f"Epoch {epoch+1}/{epochs}, Loss: {avg_loss:.4f}, Train Acc: {train_acc:.4f}, Val Acc: {val_acc:.4f}")
 
 print(f"Final Validation Accuracy: {val_accuracies[-1]:.4f}")
