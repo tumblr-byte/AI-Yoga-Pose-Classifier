@@ -1,5 +1,3 @@
-# Install MediaPipe - required for extracting pose keypoints from images
-
 
 import os
 import matplotlib.pyplot as plt
@@ -57,3 +55,4 @@ with open(csv_filename, 'w', newline='') as f:
                 print(f"No pose detected in: {img_path}")
 
 print(f"CSV file '{csv_filename}' created successfully!")
+
