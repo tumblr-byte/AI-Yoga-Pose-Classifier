@@ -1,4 +1,4 @@
-from torchvision.transforms import transforms
+
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
@@ -119,3 +119,4 @@ print(f"Final Validation Accuracy: {val_accuracies[-1]:.4f}")
 # Save the model
 torch.save(model.state_dict(), 'yoga_pose_classifier.pth')
 print("Model saved successfully!")
+
