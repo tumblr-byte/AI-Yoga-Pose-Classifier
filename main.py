@@ -1,4 +1,3 @@
-
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
@@ -27,7 +26,7 @@ train_df, valid_df = train_test_split(df, test_size=0.2, random_state=42, strati
 
 class PoseLandmarkDataset(Dataset):
     def __init__(self, dataframe):
-        self.X = dataframe.iloc[:, 1:-1].values.astype('float32')  # exclude filename and class_name
+        self.X = dataframe.drop(['filename', 'class_name', 'label'], axis=1).values.astype('float32') # exclude filename and class_name
         self.y = dataframe['label'].values.astype('int64')         # encoded labels
 
     def __len__(self):
