@@ -18,9 +18,6 @@ df = pd.read_csv("/content/pose_landmarks.csv")
 le = LabelEncoder()
 df['label'] = le.fit_transform(df['class_name'])
 
-
-
-
 # Split dataset with stratification for balanced splits
 train_df, valid_df = train_test_split(df, test_size=0.2, random_state=42, stratify=df['label'])
 
@@ -86,11 +83,6 @@ for epoch in range(epochs):
         _, preds = torch.max(outputs, 1)
         correct += (preds == labels).sum().item()
         total += labels.size(0)
-
-
-
-
-
     avg_loss = running_loss / len(train_loader)
     train_acc = correct / total
     train_losses.append(avg_loss)
@@ -117,6 +109,7 @@ print(f"Final Validation Accuracy: {val_accuracies[-1]:.4f}")
 
 # Save the model
 torch.save(model.state_dict(), 'yoga_pose_classifier.pth')
+
 
 
 
