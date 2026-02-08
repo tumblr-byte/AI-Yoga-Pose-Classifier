@@ -27,7 +27,7 @@ train_df, valid_df = train_test_split(df, test_size=0.2, random_state=42, strati
 class PoseLandmarkDataset(Dataset):
     def __init__(self, dataframe):
         self.X = dataframe.drop(['filename', 'class_name', 'label'], axis=1).values.astype('float32') # exclude filename and class_name
-        self.y = dataframe['label'].values.astype('int64')         # encoded labels
+        self.y = dataframe['label'].values.astype('int64') # encoded labels
 
     def __len__(self):
         return len(self.X)
@@ -118,4 +118,5 @@ print(f"Final Validation Accuracy: {val_accuracies[-1]:.4f}")
 # Save the model
 torch.save(model.state_dict(), 'yoga_pose_classifier.pth')
 print("Model saved successfully!")
+
 
