@@ -117,6 +117,7 @@ print(f"Final Validation Accuracy: {val_accuracies[-1]:.4f}")
 
 # Save the model
 torch.save(model.state_dict(), 'yoga_pose_classifier.pth')
-print("Model saved successfully!")
+
+
 
 
