@@ -47,7 +47,7 @@ Softmax Output
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/yoga-pose-classifier.git
+git clone https://github.com/tumblr-byte/AI-Yoga-Pose-Classifier.git
 cd yoga-pose-classifier
 
 # Install dependencies
