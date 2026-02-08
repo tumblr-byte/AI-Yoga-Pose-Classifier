@@ -82,7 +82,7 @@ python test.py
 The output will show the detected pose with confidence score and visualized landmarks.
 
 
-## 🛠️ Technical Stack
+## Technical Stack
 
 | Component | Technology |
 |-----------|-----------|
