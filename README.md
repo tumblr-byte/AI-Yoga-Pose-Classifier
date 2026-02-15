@@ -1,6 +1,6 @@
 # AI Yoga Pose Classifier
 
-A real-time yoga pose classification system using MediaPipe pose estimation and PyTorch neural networks. This project achieves **95.4% validation accuracy** in classifying yoga poses from images and videos.
+A real-time yoga pose classification system using MediaPipe pose estimation and PyTorch neural networks. This project achieves **95.4% validation accuracy** in classifying yoga poses from images.
 
 ![Image](https://github.com/user-attachments/assets/1d3ff6ac-b69b-4fb2-ab8c-5772db219c3a)
 
