@@ -211,6 +211,6 @@ AI-Yoga-Pose-Classifier/
 
 ---
 
-⭐ **Star this repo if you find it helpful!**
+
 
 
