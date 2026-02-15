@@ -60,7 +60,7 @@ Softmax Output
 
 ## Live Demo
 
-**[Try the live app here!](#)** 
+**[Try the live app here!](https://ai-yoga-pose-classifie.streamlit.app/)** 
 
 Upload an image or video to see real-time pose detection and classification!
 
