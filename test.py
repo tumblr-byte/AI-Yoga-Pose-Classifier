@@ -1,9 +1,31 @@
 import cv2
 import mediapipe as mp
 import torch
+import torch.nn.functional as F  
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle 
+import torch.nn as nn  
 
+# Load the LabelEncoder 
+with open('label_encoder.pkl', 'rb') as f:
+    le = pickle.load(f)
+
+# Define the PoseClassifier class
+class PoseClassifier(nn.Module):
+    def __init__(self, num_classes):
+        super(PoseClassifier, self).__init__()
+        self.model = nn.Sequential(
+            nn.Linear(99, 128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(64, num_classes)
+        )
+    def forward(self, x):
+        return self.model(x)
 
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
@@ -15,6 +37,8 @@ model = PoseClassifier(len(le.classes_)).to(device)
 model.load_state_dict(torch.load('yoga_pose_classifier.pth'))
 model.eval()
 
+
+# Extract 33 pose landmarks (99 coordinates) from image using MediaPipe
 def extract_landmarks(image_path):
     image = cv2.imread(image_path)
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -28,6 +52,7 @@ def extract_landmarks(image_path):
     
     return None, None, image_rgb
 
+# Predict yoga pose class and confidence score
 def predict_pose(landmarks):
     landmarks_tensor = torch.tensor(landmarks).unsqueeze(0).to(device)
     with torch.no_grad():
@@ -38,7 +63,7 @@ def predict_pose(landmarks):
     confidence_score = confidence.item()
     return predicted_class, confidence_score
 
-
+# Visualize pose with landmarks and prediction overlay
 def visualize_pose(image_path, save_path='result.png'):
     landmarks_array, pose_landmarks, image_rgb = extract_landmarks(image_path)
     if landmarks_array is None:
