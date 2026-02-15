@@ -8,9 +8,29 @@ import pickle
 import torch.nn as nn
 from PIL import Image
 import tempfile
+import urllib.request
+import os
 
 # Page config
 st.set_page_config(page_title="Yoga Pose Classifier", page_icon="🧘", layout="wide")
+
+# GitHub Release URLs - REPLACE WITH YOUR ACTUAL URLs
+MODEL_URL = "https://github.com/tumblr-byte/AI-Yoga-Pose-Classifier/releases/download/v1.0/yoga_pose_classifier.pth"
+ENCODER_URL = "https://github.com/tumblr-byte/AI-Yoga-Pose-Classifier/releases/download/v1.0/label_encoder.pkl"
+
+# Download model files from GitHub Release if not present
+@st.cache_resource
+def download_model_files():
+    if not os.path.exists('yoga_pose_classifier.pth'):
+        with st.spinner('📥 Downloading model from GitHub Release... (first time only)'):
+            urllib.request.urlretrieve(MODEL_URL, 'yoga_pose_classifier.pth')
+    
+    if not os.path.exists('label_encoder.pkl'):
+        with st.spinner('📥 Downloading label encoder... (first time only)'):
+            urllib.request.urlretrieve(ENCODER_URL, 'label_encoder.pkl')
+
+# Call download before loading
+download_model_files()
 
 # Load LabelEncoder
 @st.cache_resource
