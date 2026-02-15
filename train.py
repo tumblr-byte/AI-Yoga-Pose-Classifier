@@ -1,4 +1,3 @@
-from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 from PIL import Image
@@ -6,10 +5,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import torch
-import torch.nn.functional as F
-from sklearn.preprocessing import LabelEncoder
 import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
+from sklearn.preprocessing import LabelEncoder
+import pickle
 
 # Load dataset
 df = pd.read_csv("/content/pose_landmarks.csv")
@@ -21,10 +22,14 @@ df['label'] = le.fit_transform(df['class_name'])
 # Split dataset with stratification for balanced splits
 train_df, valid_df = train_test_split(df, test_size=0.2, random_state=42, stratify=df['label'])
 
+
 class PoseLandmarkDataset(Dataset):
+    """Custom Dataset for pose landmarks extracted from MediaPipe"""
     def __init__(self, dataframe):
-        self.X = dataframe.drop(['filename', 'class_name', 'label'], axis=1).values.astype('float32') # exclude filename and class_name
-        self.y = dataframe['label'].values.astype('int64') # encoded labels
+        # Extract feature columns (99 landmark coordinates: x, y, z for 33 points)
+        self.X = dataframe.drop(['filename', 'class_name', 'label'], axis=1).values.astype('float32')
+        # Extract encoded labels (integers representing each yoga pose class)
+        self.y = dataframe['label'].values.astype('int64')
 
     def __len__(self):
         return len(self.X)
@@ -32,22 +37,31 @@ class PoseLandmarkDataset(Dataset):
     def __getitem__(self, idx):
         return torch.tensor(self.X[idx]), torch.tensor(self.y[idx])
 
+# Create training and validation datasets
 train_dataset = PoseLandmarkDataset(train_df)
 valid_dataset = PoseLandmarkDataset(valid_df)
 
-train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
-valid_loader = DataLoader(valid_dataset, batch_size=16)
+# Create data loaders for batching and shuffling
+train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True) 
+valid_loader = DataLoader(valid_dataset, batch_size=16) 
+
 
 class PoseClassifier(nn.Module):
+    """Neural Network for classifying yoga poses from landmark coordinates"""
     def __init__(self, num_classes):
         super(PoseClassifier, self).__init__()
         self.model = nn.Sequential(
+            # Input layer: 99 features (33 landmarks × 3 coordinates) → 128 neurons
             nn.Linear(99, 128),
-            nn.ReLU(),
-            nn.Dropout(0.3),
+            nn.ReLU(),  # Activation function for non-linearity
+            nn.Dropout(0.3),  # Dropout to prevent overfitting (30% neurons dropped)
+            
+            # Hidden layer: 128 → 64 neurons
             nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Dropout(0.2),  # Added dropout for better generalization
+            nn.Dropout(0.2),  # Less dropout in deeper layer (20%)
+            
+            # Output layer: 64 → num_classes (one neuron per yoga pose)
             nn.Linear(64, num_classes)
         )
 
@@ -110,7 +124,10 @@ print(f"Final Validation Accuracy: {val_accuracies[-1]:.4f}")
 # Save the model
 torch.save(model.state_dict(), 'yoga_pose_classifier.pth')
 
+# Save the LabelEncoder
+with open('label_encoder.pkl', 'wb') as f:
+    pickle.dump(le, f)
 
-
+print("Model and LabelEncoder saved successfully!")
 
 
